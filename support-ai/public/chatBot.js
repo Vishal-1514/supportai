@@ -78,7 +78,7 @@
       padding:8px;
       gap:6px;
     ">
-    <input id="chat-input" type:"text" 
+    <input id="chat-input" type="text" 
     style="
           flex:1;
           padding:8px 10px;
@@ -114,6 +114,11 @@ document.querySelector("#chat-close").onclick=()=>{
 const input=document.querySelector("#chat-input")
 const sendBtn=document.querySelector("#chat-send")
 const messageArea=document.querySelector("#chat-messages")
+    input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+        sendBtn.click();
+    }
+});
 
 function addMessage(text,from){
     const bubble=document.createElement("div")
@@ -147,7 +152,7 @@ sendBtn.onclick=async ()=>{
     input.value=""
 
     const typing=document.createElement("div")
-    typing.innerHTML="Typing..."
+    typing.innerHTML="🤖 Typing..."
     Object.assign(typing.style,{
        fontSize: "12px",
       color: "#6b7280",
@@ -166,13 +171,18 @@ sendBtn.onclick=async ()=>{
     })
 
     const data=await response.json()
-    messageArea.removeChild(typing)
-    addMessage(data|| "something went wrong","ai")
+    // messageArea.removeChild(typing)
+        typing.remove();
+    addMessage(data.reply || "something went wrong","ai")
 
 } catch (error) {
-    console.log(error)
-    messageArea.removeChild(typing)
-    addMessage(data|| "something went wrong","ai")
+    console.error(error);
+
+    if (typing.parentNode) {
+        typing.remove();
+    }
+
+    addMessage("Something went wrong. Please try again.", "ai");
 }
 }
 
