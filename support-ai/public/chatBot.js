@@ -169,13 +169,26 @@ sendBtn.onclick=async ()=>{
             ownerId,message:text
         })
     })
+        const data = await response.json();
 
-    const data=await response.json()
-    // messageArea.removeChild(typing)
-        typing.remove();
-    addMessage(data.reply || "something went wrong","ai")
-        console.log("Status:", response.status);
+console.log("Status:", response.status);
 console.log("Response:", data);
+
+typing.remove();
+
+if (!response.ok) {
+    addMessage(data.message || "Something went wrong", "ai");
+    return;
+}
+
+addMessage(data.reply, "ai");
+
+//     const data=await response.json()
+//     // messageArea.removeChild(typing)
+//         typing.remove();
+//     addMessage(data.reply || "something went wrong","ai")
+//         console.log("Status:", response.status);
+// console.log("Response:", data);
 
 } catch (error) {
     console.error(error);
