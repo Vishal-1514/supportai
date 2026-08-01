@@ -19,10 +19,20 @@ export async function POST(req:NextRequest) {
         )
         return NextResponse.json(settings)
     } catch (error) {
-        return NextResponse.json(
-                {message:`settings error ${error}`},
-                {status:500}
-            )
+        // return NextResponse.json(
+        //         {message:`settings error ${error}`},
+        //         {status:500}
+        //     )
+        console.error("GET SETTINGS ERROR:", error);
+
+    return NextResponse.json(
+        {
+            message: error instanceof Error ? error.message : "Unknown error"
+        },
+        {
+            status: 500
+        }
+    );
     }
 }
 
