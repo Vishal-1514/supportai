@@ -174,6 +174,8 @@ sendBtn.onclick=async ()=>{
     // messageArea.removeChild(typing)
         typing.remove();
     addMessage(data.reply || "something went wrong","ai")
+        console.log("Status:", response.status);
+console.log("Response:", data);
 
 } catch (error) {
     console.error(error);
