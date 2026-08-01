@@ -68,17 +68,38 @@ ANSWER
     const ai = new GoogleGenAI({
       apiKey: process.env.GEMINI_API_KEY,
     });
+    let result;
 
-    const result = await ai.models.generateContent({
-      model: "gemini-3.1-flash-lite",
-      contents: prompt,
-    });
+    for (let i = 0; i < 3; i++) {
+        try {
+            result = await ai.models.generateContent({
+                model: "gemini-3.6-flash",
+                contents: prompt,
+            });
+            break;
+        } catch (err: any) {
+            if (i === 2) throw err;
+
+            await new Promise(resolve => setTimeout(resolve, 2000));
+        }
+    }
 
     return cors(
-      NextResponse.json({
-        reply: result.text,
-      })
+        NextResponse.json({
+            reply: result?.text,
+        })
     );
+
+    // const result = await ai.models.generateContent({
+    //   model: "gemini-3.1-flash-lite",
+    //   contents: prompt,
+    // });
+
+    // return cors(
+    //   NextResponse.json({
+    //     reply: result.text,
+    //   })
+    // );
   } catch (error) {
     console.error("CHAT API ERROR:", error);
 
